@@ -8,7 +8,7 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
       .then(() => {
         console.log('Database Connected');
       })
-      .catch((error) => {
+      .catch((error: unknown) => {
         console.log(error);
       });
   }
