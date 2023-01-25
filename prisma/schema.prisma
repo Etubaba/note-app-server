@@ -21,6 +21,7 @@ model User {
 model Notes {
   id        Int      @id @default(autoincrement())
   content   String
+  title     String?
   user_id   Int
   user      User     @relation(fields: [user_id], references: [id])
   createdAt DateTime @default(now())
