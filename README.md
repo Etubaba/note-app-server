@@ -1,27 +1,28 @@
-# Lendsqr test assessmen
+<p align="center">
+  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
+</p>
 
-This is a documentation for wallet system using express JS to create REST
-API to create user, authenticate user, fund wallet, transfer fund, withdraw funds and check wallet history.
+# Note Application APIs
 
-Other stack include, MySQL,KnexJS ORM, Typescript, JWT. <br/>
+This is a documentation for my note applicatin using nest js framework of node js to create REST
+API to create user, authenticate user, post notes, delete notes, and update notes.
 
-View the database structure with dbdesigner <p><a href="https://dbdesigner.page.link/a5FZDoTMLMXwqSFT7">here</a></p>
+stack include, Nest JS, MySQL,prisma ORM,JWT . <br/>
 
 ## Install
 
-    npm install
+    yarn install
 
 ## Run the app
 
-    npm run dev
-
-## View database structure with https://app.dbdesigner.net/
-
-    https://dbdesigner.page.link/a5FZDoTMLMXwqSFT7
+    yarn start:dev (to watch for changes or yarn start to exclude watch)
 
 ## Run the tests
 
-npx vitest
+    yarn test:dev
+
+    P (to select pattern)
+    file name (for unit testing)
 
 # REST API
 
@@ -31,9 +32,9 @@ The REST API to the this app is described below.
 
 ### Request
 
-`POST /signup`
+`POST /user/create`
 
-    curl -i -H 'Accept: application/json' -d 'email=lamus@gmail.com&password=12345' http://localhost:8080/signup
+    curl -i -H 'Accept: application/json' -d 'email=lamus@gmail.com&password=12345' http://localhost:3000/user/create
 
 ### Response
 
@@ -55,7 +56,7 @@ The REST API to the this app is described below.
 
 `POST /auth`
 
-    curl -i -H 'Accept: application/json' -d 'email=Foo&password=new' http://localhost:8080/auth
+    curl -i -H 'Accept: application/json' -d 'email=Foo&password=new' http://localhost:3000/auth
 
 ### Response
 
@@ -84,9 +85,9 @@ The REST API to the this app is described below.
 
 ### Request
 
-`GET /make/payment`
+`POST /wallet/fund`
 
-    curl -i -H authorization:token 'Accept: application/json' -d 'user_email=koko@gmail&amount=4000' http://localhost:8080/make/payment
+    curl -i -H 'Accept: application/json' -d 'user_email=koko@gmail&amount=4000' http://localhost:3000/wallet/fund
 
 ### Response
 
@@ -94,15 +95,21 @@ The REST API to the this app is described below.
     Date: Thu, 24 Feb 2011 12:36:30 GMT
     Status: 200 OK
     Connection: close
-    Content-Type: HTML page
+    Content-Type: application/json
+    Content-Length: 36
+
+{
+"status": true,
+"msg": "User wallet funded successfull"
+}
 
 ## Transfer Fund
 
 ### Request
 
-`Post /transfer/funds`
+`Post /wallet/transfer/fund`
 
-    curl -i -H 'Accept: application/json' authorization:token -d 'sender_email=Foo@gmail.com&receiver=new@gmail.com&amount=200' http://localhost:8080/transfer/fund
+    curl -i -H 'Accept: application/json' -d 'sender_email=Foo@gmail.com&receiver=new@gmail.com&amount=200' http://localhost:3000/wallet/transfer/fund
 
 ### Response
 
@@ -124,7 +131,7 @@ The REST API to the this app is described below.
 
 `POST /wallet/witdrawer`
 
-    curl -i -H authorization:token 'Accept: application/json' -d 'user_email=Bar@gmail.com&amount=400' http://localhost:8080/withdrawer/funds
+    curl -i -H 'Accept: application/json' -d 'user_email=Bar@gmail.com&amount=400' http://localhost:3000/wallet/withdrawer
 
 ### Response
 
@@ -140,13 +147,42 @@ The REST API to the this app is described below.
 "msg": "Withdraw completed successfully"
 }
 
+## Get User wallet balance
+
+### Request
+
+`GET /wallet/balance/{user email or wallet number}`
+
+    curl -i -H 'Accept: application/json' http://localhost:3000/thing/wallet/balance/{user email or wallet number}
+
+### Response
+
+    HTTP/1.1 200 OK
+    Date: Thu, 24 Feb 2011 12:36:31 GMT
+    Status: 200 OK
+    Connection: close
+    Content-Type: application/json
+    Content-Length: 74
+
+{
+"status": true,
+"data": {
+"id": 6,
+"wallet_number": 642627,
+"user_email": "tired@gmail.com",
+"amount": 2000,
+"created_at": "2022-11-07T19:25:29.000Z",
+"updated_at": "2022-11-07T19:25:29.000Z"
+}
+}
+
 ## Get Transaction History
 
 ### Request
 
-`Post /user/wallet/history`
+`Get /transaction/history/{user email or wallet number}`
 
-    curl -i -H 'Accept: application/json' -d 'user_email=Bar@gmail.com' http://localhost:3000/user/wallet/history
+    curl -i -H 'Accept: application/json'  http://localhost:3000/transaction/history/{user email or wallet number}
 
 ### Response
 
@@ -178,6 +214,47 @@ The REST API to the this app is described below.
 "created_at": "2022-11-05T08:24:35.000Z",
 "updated_at": "2022-11-05T08:24:35.000Z"
 }
+]
+}
+
+## Get User List (for admin and debug)
+
+### Request
+
+`GET /user/all`
+
+    curl -i -H 'Accept: application/json' http://localhost:3000/user/alll
+
+### Response
+
+    HTTP/1.1 200 OK
+    Date: Thu, 24 Feb 2011 12:36:31 GMT
+    Status: 200 OK
+    Connection: close
+    Content-Type: application/json
+    Content-Length: 40
+
+{
+"status": true,
+"data": [
+{
+"id": 1,
+"email": "etubaba@gmail.com",
+"password": "$argon2id$v=19$m=65536,t=3,p=4$kg9cY/9kGAXgWpGx7DXxJg$66KpO4ge7J828j9ckEJZYbsSLZ14owK/AyfDaFabGB4",
+"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImV0dWJhYmFAZ21haWwuY29tIiwiaWQiOjEsImlhdCI6MTY2NzgxNjY2OCwiZXhwIjoxNjY3OTAzMDY4fQ.MYXF5jpSLyPlHPjPIX151HmwHChA1UtKmaLTIvlDqSw",
+"wallet_balance": 2700,
+"created_at": "2022-11-05T08:18:48.000Z",
+"updated_at": "2022-11-05T08:18:48.000Z"
+},
+{
+"id": 2,
+"email": "jamesjaga@gmail.com",
+"password": "$argon2id$v=19$m=65536,t=3,p=4$Nw/NYVa8iONmmfstWltdoQ$a3eWf3iVwm5kN1IjgZT9wvXMRHfv981CTP9/c/4JigY",
+"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImphbWVzamFnYUBnbWFpbC5jb20iLCJpZCI6MiwiaWF0IjoxNjY3NjM2MzY2LCJleHAiOjE2Njc3MjI3NjZ9.9zUOV2TqLkmqYDQroQtZY6qSDG90EICirq7K732YQZ4",
+"wallet_balance": 500,
+"created_at": "2022-11-05T08:19:15.000Z",
+"updated_at": "2022-11-05T08:19:15.000Z"
+},
 ]
 }
 
@@ -221,5 +298,5 @@ The REST API to the this app is described below.
 
 {
 "statusCode": 401,
-"message": "Authorized Needed"
+"message": "Unauthorized"
 }
