@@ -1,15 +1,11 @@
-import { IsString, IsNotEmpty, IsEmail, IsOptional } from 'class-validator';
+import { IsString, IsNotEmpty, IsEmail } from 'class-validator';
 import { Transform } from 'class-transformer';
 
-export class UserDto {
+export class LoginDto {
   @IsString()
   @IsNotEmpty()
   @IsEmail()
   email: string;
-
-  @IsString()
-  @IsOptional()
-  full_name?: string;
 
   @IsString()
   @IsNotEmpty()

@@ -27,6 +27,6 @@ export class UserService {
       data: { email, full_name, password: hashedPassword },
     });
 
-    return { status: true, message: 'User Created successfull' };
+    return { status: true, message: 'User Created successfully' };
   }
 }
