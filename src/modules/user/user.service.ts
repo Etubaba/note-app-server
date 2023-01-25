@@ -9,11 +9,24 @@ export class UserService {
 
   async createAccount(userDto: UserDto) {
     const { email, full_name, password } = userDto;
+
+    //check if email exist
+    const emailExist = await this.prismaService.user.findUnique({
+      where: {
+        email: email,
+      },
+    });
+
+    if (emailExist) throw new NotAcceptableException('User Already exist');
+
+    //hash password
     const hashedPassword = await argon2.hash(password);
+
+    //create user
     await this.prismaService.user.create({
       data: { email, full_name, password: hashedPassword },
     });
 
-    return { status: 'success', message: 'User Created successfull' };
+    return { status: true, message: 'User Created successfull' };
   }
 }
