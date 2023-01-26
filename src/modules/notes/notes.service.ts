@@ -70,7 +70,7 @@ export class NotesService {
     return { status: true, message: `Note Fetched successfully`, data: note };
   }
   async findOneBySlug(slug: string) {
-    //check if note exist
+    //check if note exist #####
     const note = await this.prismaService.notes.findFirst({
       where: {
         slug,
