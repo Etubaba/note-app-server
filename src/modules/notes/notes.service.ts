@@ -47,8 +47,14 @@ export class NotesService {
     return { status: true, message: 'Note Created Successfully' };
   }
 
-  findUserNotes(id: number) {
-    return `This action returns all notes`;
+  async findUserNotes(id: number) {
+    //validate user Id
+    const userNotes = await this.prismaService.notes.findMany({
+      where: {
+        user_id: id,
+      },
+    });
+    return { status: true, data: userNotes };
   }
 
   async findOne(id: number) {
