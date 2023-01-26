@@ -1,4 +1,8 @@
-import { Injectable, NotAcceptableException } from '@nestjs/common';
+import {
+  Injectable,
+  NotAcceptableException,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { UserDto } from './dto/createuser.dto';
 import * as argon2 from 'argon2';
@@ -28,5 +32,20 @@ export class UserService {
     });
 
     return { status: true, message: 'User Created successfully' };
+  }
+
+  async deleteAccount(id: number) {
+    const user = await this.prismaService.user.findUnique({
+      where: {
+        id,
+      },
+    });
+    if (!user) throw new NotFoundException('User Not found');
+
+    await this.prismaService.user.delete({
+      where: {
+        id,
+      },
+    });
   }
 }

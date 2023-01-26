@@ -10,7 +10,8 @@
   
   "license": "UNLICENSED",
   "scripts": {
-    "prebuild": " yarn install --ignore-engines && yarn add nest &&    yarn global add rimraf && rimraf dist",
+    "prebuild": " yarn install --ignore-engines && yarn add nest &&    yarn global add rimraf && rimraf dist ",
+    "postbuild":"npx prisma generate && npx prisma migrate deploy",
     "build": "yarn run  nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": " yarn run nest start",
