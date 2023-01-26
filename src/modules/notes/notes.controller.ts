@@ -20,23 +20,27 @@ export class NotesController {
     return this.notesService.createNote(createNoteDto);
   }
 
-  @Get()
-  findAll() {
-    return this.notesService.findAll();
+  @Get('/user/:id')
+  findUserNotes(@Param('id') id: string) {
+    return this.notesService.findUserNotes(+id);
   }
 
-  @Get(':id')
+  @Get('/details/:id')
   findOne(@Param('id') id: string) {
     return this.notesService.findOne(+id);
   }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateNoteDto: UpdateNoteDto) {
-    return this.notesService.update(+id, updateNoteDto);
+  @Get('/link/:slug')
+  findOneBySlug(@Param('slug') slug: string) {
+    return this.notesService.findOneBySlug(slug);
   }
 
-  @Delete(':id')
+  @Patch('update/:id')
+  update(@Param('id') id: string, @Body() updateNoteDto: UpdateNoteDto) {
+    return this.notesService.updateNote(+id, updateNoteDto);
+  }
+
+  @Delete('/delete/:id')
   remove(@Param('id') id: string) {
-    return this.notesService.remove(+id);
+    return this.notesService.removeNote(+id);
   }
 }
