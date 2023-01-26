@@ -4,6 +4,7 @@
   "description": "",
   "author": "",
   "private": true,
+  
   "license": "UNLICENSED",
   "scripts": {
     "prebuild": "yarn add nest &&    yarn global add rimraf && rimraf dist",
