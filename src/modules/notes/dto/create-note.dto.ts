@@ -10,4 +10,8 @@ export class CreateNoteDto {
   @IsNotEmpty()
   @Transform(({ value }) => String(value))
   content: string;
+
+  @IsNotEmpty()
+  @Transform(({ value }) => Number(value))
+  user_id: number;
 }
