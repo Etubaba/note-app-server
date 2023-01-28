@@ -34,7 +34,7 @@ export class NotesController {
     return this.notesService.findOneBySlug(slug);
   }
 
-  @Patch('update/:id')
+  @Patch('/update/:id')
   update(@Param('id') id: string, @Body() updateNoteDto: UpdateNoteDto) {
     return this.notesService.updateNote(+id, updateNoteDto);
   }

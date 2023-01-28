@@ -1,4 +1,5 @@
 import { Controller, Post, Body, Param } from '@nestjs/common';
+import { Delete } from '@nestjs/common/decorators';
 import { UserDto } from './dto/createuser.dto';
 
 import { UserService } from './user.service';
@@ -11,7 +12,7 @@ export class UserController {
   async createUser(@Body() userDto: UserDto) {
     return await this.userService.createAccount(userDto);
   }
-  @Post('/delete/:id')
+  @Delete('/delete/:id')
   async deleteUser(@Param() id: string) {
     return await this.userService.deleteAccount(+id);
   }
