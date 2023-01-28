@@ -92,7 +92,7 @@ export class NotesService {
       },
     });
 
-    if (!user) throw new NotFoundException(`User not Found `);
+    // if (!user) throw new NotFoundException(`User not Found `);
 
     //check if note exist and validate note belongs to the user
     const note = await this.prismaService.notes.findUnique({
